@@ -1,0 +1,4 @@
+#!/bin/bash
+# Wrapper that runs tools.py inside its dedicated venv.
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$HERE/venv/bin/python" "$HERE/tools.py" "$@"
