@@ -231,6 +231,9 @@ def _legacy_parser() -> argparse.ArgumentParser:
     p.add_argument("--password", default="1111", help="Password for encode-folder/decode-folder.")
     p.add_argument("--root", default=None, help="Root for -Z (default: --dir).")
     p.add_argument("--finished", default=None, help="Finished dir for -Z (default: <root>_Finished).")
+    # Optional trailing positional: merged output base name for -C p / -C t
+    # (e.g. `tcp 棋子的世界-台`). Falls back to --name / "merged" when omitted.
+    p.add_argument("name_pos", nargs="?", default=None, help=argparse.SUPPRESS)
     return p
 
 
@@ -252,6 +255,8 @@ def _dispatch_legacy(argv: list[str]) -> int:
         return cmd_folder.flatten(args)
     if args.combine:
         args.type = args.combine
+        if args.name_pos:
+            args.name = args.name_pos
         return cmd_combine.combine(args)
     if args.delete_chars is not None:
         args.pattern = args.delete_chars
